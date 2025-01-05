@@ -21,11 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning
-        className="flex flex-col w-full"
+        className="w-full overflow-auto mx-auto"
       >
         {children}
-
-
       </body>
     </html>
   );

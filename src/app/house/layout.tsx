@@ -1,4 +1,6 @@
-import Logo from "@/components/Logo"
+import Header from "@/components/Header"
+import { ImageProvider } from "@/context/ImageContext"
+
 
 export default function HouseListPageLayout({
     children,
@@ -6,10 +8,13 @@ export default function HouseListPageLayout({
     children: React.ReactNode
 }) {
     return (
-        <section>
-            <main className="h-screen">
-                {children}
-            </main>
+        <section className="h-screen">
+            <Header />
+            <ImageProvider>
+                <main className="w-full h-full" >
+                    {children}
+                </main>
+            </ImageProvider>
         </section>
     )
 }
