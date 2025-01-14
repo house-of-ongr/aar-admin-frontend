@@ -9,8 +9,7 @@ import BorderImageUploader from "@/components/houseEditor/BorderImageUploader";
 import HouseImageUploader from "@/components/houseEditor/HouseImageUploader";
 import RoomImagesUploader from "@/components/houseEditor/RoomImagesUploader";
 import { DraggableItemWrapper } from "@/components/houseEditor/DraggableItemWrapper";
-
-const BACK_API = process.env.NEXT_PUBLIC_BACK_API;
+import API_CONFIG from "@/config/api";
 
 export default function HouseEditorPage() {
   const { houseImage, borderImage, roomImages } = useImageContext();
@@ -48,10 +47,8 @@ export default function HouseEditorPage() {
 
     formData.append("metadata", JSON.stringify(metadata));
 
-    // console.log("FormData:", formData.get("metadata"));
-
     try {
-      const response = await fetch(`${BACK_API}/admin/houses`, {
+      const response = await fetch(`${API_CONFIG.TEST_BACK_API}/admin/houses`, {
         method: "POST",
         body: formData,
       });
@@ -71,6 +68,7 @@ export default function HouseEditorPage() {
   };
 
   const borderImageURL = useMemo(() => borderImage && URL.createObjectURL(borderImage.file), [borderImage?.file]);
+  const roomImageURLs = useMemo(() => roomImages.map((room) => URL.createObjectURL(room.file)), [roomImages]);
 
   return (
     <div className="w-full h-full flex items-center">
@@ -96,7 +94,7 @@ export default function HouseEditorPage() {
                 width={room.width!}
                 height={room.height!}
                 scale={scale}
-                file={room.file}
+                imageUrl={roomImageURLs[index]}
               />
             ))}
         </div>
