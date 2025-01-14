@@ -1,33 +1,59 @@
 "use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { House } from "@/types/house";
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
-import GridHouseList from "@/components/GridHouseList";
 import Header from "@/components/Header";
+import GridHouseList from "@/components/GridHouseList";
 import SearchComponent from "@/components/SearchComponent";
-import { HOUSE_LIST } from "@/mocks/house-list";
-import { House } from "@/types/house";
-import Link from "next/link";
-import { useState } from "react";
+import API_CONFIG from "@/config/api";
 
 export default function HouseListPage() {
-  const [filteredHouses, setFilteredHouses] = useState<House[]>(HOUSE_LIST);
+  const [houses, setHouses] = useState<House[]>([]);
+  const [filteredHouses, setFilteredHouses] = useState<House[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalItems, setTotalItems] = useState<number>(0);
+  const ITEMS_PER_PAGE = 9;
+
+  const fetchHouses = async (page: number) => {
+    try {
+      const response = await fetch(`${API_CONFIG.BACK_API}/admin/houses?page=${page - 1}&size=${ITEMS_PER_PAGE}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch houses");
+      }
+      const data = await response.json();
+
+      setHouses(data.houses.content);
+      setFilteredHouses(data.houses.content);
+      setTotalPages(data.houses.totalPages);
+      setTotalItems(data.houses.totalElements);
+    } catch (error) {
+      console.error("Error fetching house list:", error);
+    }
+  };
 
   const searchHandler = (filter: string, query: string) => {
-    let results = HOUSE_LIST;
-    if (filter === "name") {
-      results = HOUSE_LIST.filter((house) => house.name.toLowerCase().includes(query.toLowerCase()));
-    } else if (filter === "designer") {
-      results = HOUSE_LIST.filter((house) => house?.author?.toLowerCase().includes(query.toLowerCase()));
+    let results = houses;
+    if (filter === "house-title") {
+      results = houses.filter((house) => house.title.toLowerCase().includes(query.toLowerCase()));
+    } else if (filter === "author") {
+      results = houses.filter((house) => house?.author?.toLowerCase().includes(query.toLowerCase()));
     } else if (filter === "all") {
-      results = HOUSE_LIST.filter(
+      results = houses.filter(
         (house) =>
-          house.name.toLowerCase().includes(query.toLowerCase()) ||
+          house.title.toLowerCase().includes(query.toLowerCase()) ||
           house?.author?.toLowerCase().includes(query.toLowerCase())
       );
     }
 
     setFilteredHouses(results);
   };
+
+  useEffect(() => {
+    fetchHouses(currentPage);
+  }, [currentPage]);
 
   return (
     <>
@@ -42,7 +68,14 @@ export default function HouseListPage() {
             </Link>
           </div>
         </div>
-        <GridHouseList houses={filteredHouses} />
+
+        <GridHouseList
+          houses={filteredHouses}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+        />
         <Footer />
       </div>
     </>

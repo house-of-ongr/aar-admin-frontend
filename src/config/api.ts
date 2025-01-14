@@ -1,6 +1,8 @@
 const API_CONFIG = {
   BACK_API: process.env.NEXT_PUBLIC_BACK_API || "",
   TEST_BACK_API: process.env.NEXT_PUBLIC_TEST_BACK_API || "",
+  PRIVATE_IMAGE_LOAD_API: process.env.NEXT_PUBLIC_IMAGE_LOAD_PRIVATE || "",
+  PUBLIC_IMAGE_LOAD_API: process.env.NEXT_PUBLIC_IMAGE_LOAD_PUBLIC || "",
 };
 
 export default API_CONFIG;

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { House } from "@/types/house";
 import Pagination from "./Pagination";
@@ -8,22 +7,19 @@ import HouseCard from "./HouseCard";
 
 type Props = {
   houses: House[];
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  totalPages: number;
+  totalItems?: number;
 };
 
-export default function GridHouseList({ houses }: Props) {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const ITEMS_PER_PAGE = 9;
-  const totalItems = houses.length;
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const currentItems = houses.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-
-  if (currentItems.length === 0) return <div className="text-center">검색 결과가 없습니다.</div>;
+export default function GridHouseList({ houses, currentPage, onPageChange, totalPages, totalItems }: Props) {
+  if (houses.length === 0) return <div className="text-center">검색 결과가 없습니다.</div>;
 
   return (
     <div>
       <ul className="mx-5 md:mx-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
-        {currentItems.map((house) => (
+        {houses.map((house) => (
           <Link
             href={`/house/${house.id}`}
             key={house.id}
@@ -33,7 +29,7 @@ export default function GridHouseList({ houses }: Props) {
           </Link>
         ))}
       </ul>
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
     </div>
   );
 }
