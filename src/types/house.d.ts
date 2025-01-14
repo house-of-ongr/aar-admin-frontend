@@ -1,9 +1,9 @@
 export interface House {
   id: number;
-  name: string;
-  designedBy?: string;
-  roomCount?: number;
-  createdAt: string;
-  theme?: string;
-  fileName?: string;
+  title: string;
+  author: string;
+  createdDate: string;
+  updatedDate: string;
+  description: string;
+  imageId: number;
 }
