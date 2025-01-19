@@ -21,7 +21,7 @@ export default function GridHouseList({ houses, currentPage, onPageChange, total
       <ul className="mx-5 md:mx-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
         {houses.map((house) => (
           <Link
-            href={`/house/${house.id}`}
+            href={`/houses/${house.id}`}
             key={house.id}
             className="flex w-full px-2  md:py-4 md:px-3 bg-white border shadow-sm border-[#f5946d] "
           >
