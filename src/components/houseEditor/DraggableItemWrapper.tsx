@@ -1,7 +1,8 @@
 import React from "react";
-import DraggableItem from "./DraggableItem";
+
 import Image from "next/image";
 import { useImageContext } from "@/context/ImageContext";
+import { DraggableItem } from "./DraggableItem";
 
 type DraggableItemWrapperProps = {
   index: number;

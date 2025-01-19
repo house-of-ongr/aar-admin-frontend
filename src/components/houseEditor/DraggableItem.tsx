@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 
 interface DraggableItemProps {
@@ -13,59 +13,58 @@ interface DraggableItemProps {
   children: React.ReactNode;
 }
 
-export default function ({ children, index, _width, _height, zIndex, scale, onPositionChange }: DraggableItemProps) {
-  const nodeRef = useRef<HTMLDivElement>(null as any);
+export const DraggableItem = React.memo(
+  ({ children, index, _width, _height, zIndex, scale, onPositionChange }: DraggableItemProps) => {
+    const nodeRef = useRef<HTMLDivElement>(null as any);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const isDraggingRef = useRef(false);
-  const ORIGIN_IMG_WIDTH = 5000;
-  const ORIGIN_IMG_HEIGHT = 5000;
+    const isDraggingRef = useRef(false);
+    const ORIGIN_IMG_WIDTH = 5000;
+    const ORIGIN_IMG_HEIGHT = 5000;
 
-  const onDrag = (e: DraggableEvent, data: DraggableData) => {
-    isDraggingRef.current = true;
-  };
+    const onDrag = (e: DraggableEvent, data: DraggableData) => {
+      isDraggingRef.current = true;
+      setPosition({ x: data.x, y: data.y });
+    };
 
-  const onStop = (e: DraggableEvent, data: DraggableData) => {
-    isDraggingRef.current = false;
+    const onStop = (e: DraggableEvent, data: DraggableData) => {
+      isDraggingRef.current = false;
+      setPosition({ x: data.x, y: data.y });
 
-    // console.log("Dragged element position:", {
-    //   index: index,
-    //   x: data.x,
-    //   y: data.y,
-    //   width: data.node.clientWidth,
-    //   height: data.node.clientHeight,
-    // });
+      if (onPositionChange) {
+        onPositionChange(index, Number(data.x.toFixed(2)), Number(data.y.toFixed(2)));
+      }
+    };
 
-    if (onPositionChange) {
-      onPositionChange(index, data.x, data.y);
-    }
-  };
+    useEffect(() => {
+      if (nodeRef.current) {
+        console.log("image width:", window.getComputedStyle(nodeRef.current).width);
+        console.log("image height:", window.getComputedStyle(nodeRef.current).height);
+      }
+    }, []);
 
-  useEffect(() => {
-    if (nodeRef.current) {
-      console.log("image width:", window.getComputedStyle(nodeRef.current).width);
-      console.log("image height:", window.getComputedStyle(nodeRef.current).height);
-    }
-  }, []);
+    return (
+      // right : (5000 - 방이미지 원본 너비) * 스케일
+      // bottom : (5000 -  방 이미지 원본 높이) * 스케일
 
-  return (
-    // right : (5000 - 방이미지 원본 너비) * 스케일
-    // bottom : (5000 -  방 이미지 원본 높이) * 스케일
-
-    <Draggable
-      bounds={{
-        left: 0,
-        top: 0,
-        right: (ORIGIN_IMG_WIDTH - _width) * scale,
-        bottom: (ORIGIN_IMG_HEIGHT - _height) * scale,
-      }}
-      nodeRef={nodeRef}
-      onStop={onStop}
-      onDrag={onDrag}
-    >
-      {/* 1 + zIndex 를 하는 이유는 보더 이미지보다 위에 있어야하기때문에 */}
-      <div className="absolute top-0 inline-block" style={{ zIndex: 1 + zIndex }} ref={nodeRef}>
-        {children}
-      </div>
-    </Draggable>
-  );
-}
+      <Draggable
+        bounds={{
+          left: 0,
+          top: 0,
+          right: (ORIGIN_IMG_WIDTH - _width) * scale,
+          bottom: (ORIGIN_IMG_HEIGHT - _height) * scale,
+        }}
+        nodeRef={nodeRef}
+        onStop={onStop}
+        onDrag={onDrag}
+      >
+        <div className="absolute top-0 inline-block bg-black/20" style={{ zIndex }} ref={nodeRef}>
+          {children}
+          <div className="absolute top-0 left-0 bg-black text-white text-xs p-1 rounded">
+            index: {index + 1} x: {position.x.toFixed(0)}, y: {position.y.toFixed(0)}
+          </div>
+        </div>
+      </Draggable>
+    );
+  }
+);

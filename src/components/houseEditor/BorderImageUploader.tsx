@@ -1,51 +1,30 @@
 import { useImageContext } from "@/context/ImageContext";
-import React from "react";
+import React, { useState } from "react";
+import FileUploadButton from "../buttons/FileUploadButton";
+import FileName from "./FileName";
+import ContainerTitle from "../ContainerTitle";
 
 export default function BorderImageUploader() {
-  const { borderImage, setBorderImage, handleFileChange } = useImageContext();
+  const { handleFileChange } = useImageContext();
+  const [fileName, setFileName] = useState<string>("");
 
-  const handleBorderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (borderImage) {
-      const newTitle = e.target.value;
-      const maxLength = 30;
-      if (newTitle.length > maxLength) {
-        alert(`보더 타이틀은 최대 ${maxLength}자까지 입력 가능합니다.`);
-        return;
-      }
-
-      setBorderImage((prev) => ({
-        ...prev!,
-        title: newTitle,
-      }));
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleFileChange(e, "border");
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
     }
   };
 
   return (
-    <div className="p-2">
-      <label>2nd. 하우스 보더 이미지 업로드</label>
-
-      <input
-        type="file"
-        id="border-img"
-        className="cursor-pointer border rounded-lg w-full"
-        accept="image/*"
-        onChange={(e) => handleFileChange(e, "border")}
-      />
-      {borderImage && (
-        <div className="mt-2">
-          <label htmlFor="border-title" className="text-sm font-light">
-            하우스 보더 타이틀
-          </label>
-          <input
-            type="text"
-            id="border-title"
-            className="py-1 px-2 w-full rounded border border-orange-300"
-            placeholder="보더 타이틀 입력하세요"
-            value={borderImage.title}
-            onChange={handleBorderChange}
-          />
-        </div>
-      )}
+    <div className="rounded-2xl pt-3 pb-6 px-7 bg-[#F8EFE6] ">
+      <ContainerTitle stepText="Second" headingText="하우스 보더 이미지 업로드" />
+      <div className="flex flex-col items-center gap-6">
+        {/* input 숨김 */}
+        <input type="file" id="border-img" className="hidden" accept="image/*" onChange={handleFileUpload} />
+        <FileUploadButton htmlFor="border-img" />
+        <div className="w-full flex text-start">{fileName && <FileName fileName={fileName} />}</div>
+      </div>
     </div>
   );
 }
