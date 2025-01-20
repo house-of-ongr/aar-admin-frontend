@@ -2,10 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "GabiaNull-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2409-2@1.0/GabiaNull-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GIMJE";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/GIMJE.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body {
   height: 100vh;
-  font-family: "Gothic A1";
+  color: #363333;
+  font-family: "GabiaNull-Regular";
 }
 
 /* 스크롤바 숨기면서 스크롤링 기능은 허용 */
@@ -19,7 +34,22 @@ html::-webkit-scrollbar {
   display: none; /* for Chrome, Safari, and Opera */
 }
 
+button {
+  font-family: "GIMJE";
+}
+
 /* 자주 쓰는 스타일 조합 정의  */
 .flex-center {
   @apply flex justify-center items-center;
+}
+
+/* 기존 input의 디자인 삭제 */
+input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  width: 10px;
+  height: 10px;
+  background: orangered;
+  border-radius: 24px;
 }
