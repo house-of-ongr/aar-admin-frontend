@@ -1,56 +1,36 @@
 import React, { memo } from "react";
 import Image from "next/image";
-
 import API_CONFIG from "@/config/api";
 import Link from "next/link";
-
-type SingleRoom = {
-  roomId: number;
-  name: string;
-  width: number;
-  height: number;
-  imagePath: string;
-  borderPath?: string;
-  x: number;
-  y: number;
-  z: number;
-  // 추후 삭제
-  form: string;
-};
+import { HouseDetail, Room } from "@/types/house";
 
 type RenderImagesProps = {
   houseData: {
-    houseId: number | string;
-    house: {
-      borderImageId: number;
-      borderPath?: string;
-    };
-    rooms: SingleRoom[];
+    house: HouseDetail;
+    rooms: Room[];
   };
   scale: number;
 };
 
 const RenderImages = memo(({ houseData, scale }: RenderImagesProps) => {
-  console.log("render image - houseData", houseData);
-
+  console.log("houseData?", houseData.house.borderImageId);
   return (
-    <div className="relative w-4/5 h-full flex justify-center border-l-2">
+    <section className="relative w-4/5 h-full flex justify-center border-l-2">
       <div className="relative">
         <Image
           priority
           alt="house-border-image"
           width={window.innerHeight}
           height={window.innerHeight}
-          src={`${API_CONFIG.PRIVATE_IMAGE_LOAD_API}/${houseData.house.borderPath}`}
+          src={`${API_CONFIG.PRIVATE_IMAGE_LOAD_API}/${houseData.house.borderImageId}`}
         />
 
         {houseData.rooms.map((room, index) => (
-          <Link key={room.imagePath} href={`/houses/${houseData.houseId}/rooms/${houseData.rooms[index].roomId}`}>
+          <Link key={room.imageId} href={`/houses/${houseData.house.houseId}/rooms/${room.roomId}`}>
             <Image
               priority
               key={room.name}
-              src={`${API_CONFIG.PRIVATE_IMAGE_LOAD_API}/${room.imagePath}`}
-              // src={`${API_CONFIG.PRIVATE_IMAGE_LOAD_API}/private/images/${room.imageId}`}
+              src={`${API_CONFIG.PRIVATE_IMAGE_LOAD_API}/${room.imageId}`}
               alt={room.name}
               width={Number(room.width) * scale}
               height={Number(room.height) * scale}
@@ -65,7 +45,7 @@ const RenderImages = memo(({ houseData, scale }: RenderImagesProps) => {
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   );
 }, arePropsEqual);
 

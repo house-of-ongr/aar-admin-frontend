@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import SpinnerIcon from "../SpinnerIcon";
+import SpinnerIcon from "../icons/SpinnerIcon";
 
 interface BorderImagePreviewProps {
   imageUrl: string | null;

@@ -38,7 +38,7 @@ export default function RoomForm({ rooms, isEdit, onChange, onSubmit, onCancel, 
       {rooms.map((room, index) => (
         <InputField
           key={index}
-          label={`Room Image Id - ${room.imageId}`}
+          label={`Room Id - ${room.roomId}`}
           id={`room-${room.imageId}`}
           value={room.name}
           readOnly={!isEdit}

@@ -15,7 +15,7 @@ export default function Button({ label, type = "button", onClick, disabled, size
       type={type}
       disabled={disabled}
       className={clsx(
-        "border py-3 rounded-lg text-sm text-white bg-[#F5946D] cursor-pointer disabled:cursor-not-allowed hover:bg-[#e7a68c]",
+        "border py-3 rounded-lg text-sm  text-white bg-[#F5946D] cursor-pointer disabled:cursor-not-allowed hover:bg-[#e7a68c]",
         {
           "px-8": size === "default",
           "px-2": size === "small",

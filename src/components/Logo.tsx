@@ -9,7 +9,7 @@ type LogoProps = {
 
 export default function Logo({ showText = true }: LogoProps) {
     return (
-        <Link href={"/"} className="flex flex-col items-center md:flex-row gap-2 p-7 cursor-pointer">
+        <Link href={"/"} className="flex flex-col items-center md:flex-row gap-2 p-5 cursor-pointer">
             <Image src={"/images/logo.png"} alt="archive of ongr logo image" width="50" height="50">
             </Image>
 

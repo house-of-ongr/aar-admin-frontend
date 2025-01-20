@@ -7,8 +7,8 @@ import Header from "@/components/Header";
 import GridHouseList from "@/components/GridHouseList";
 import SearchComponent from "@/components/SearchComponent";
 import API_CONFIG from "@/config/api";
-import { HOUSE_LIST } from "@/mocks/house-list";
 import { House } from "@/types/house";
+import { houseSearchOptions } from "@/constants/searchOptions";
 
 export default function HouseListPage() {
   const [houses, setHouses] = useState<House[]>([]);
@@ -65,7 +65,7 @@ export default function HouseListPage() {
         <div className="px-10 md:px-20 py-2 flex justify-between items-center mb-2">
           <h1 className="text-xl ">AOO HOUSE</h1>
           <div className="flex-center gap-5 ">
-            <SearchComponent onSearch={searchHandler} />
+            <SearchComponent onSearch={searchHandler} options={houseSearchOptions} />
             <Link href={"/houses/house-editor"}>
               <Button label="NEW" />
             </Link>
