@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import SearchIcon from "./icons/SearchIcon";
 
-type SearchProp = {
-  onSearch: (filter: string, query: string) => void;
+type Option = {
+  value: string;
+  label: string;
 };
 
-export default function SearchComponent({ onSearch }: SearchProp) {
-  const [filter, setFilter] = useState<string>("all");
+type SearchProp = {
+  onSearch: (filter: string, query: string) => void;
+  options: Option[];
+};
+
+export default function SearchComponent({ onSearch, options }: SearchProp) {
+  const [filter, setFilter] = useState<string>(options[0]?.value || "all");
   const [query, setQuery] = useState<string>("");
 
   const searchHandler = () => {
@@ -19,9 +25,11 @@ export default function SearchComponent({ onSearch }: SearchProp) {
         onChange={(e) => setFilter(e.target.value)}
         className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2"
       >
-        <option value="all">전체</option>
-        <option value="house-title">하우스명</option>
-        <option value="author">작가명</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
 
       <input
@@ -29,7 +37,7 @@ export default function SearchComponent({ onSearch }: SearchProp) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="검색어를 입력하세요"
-        className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#f5946d]"
+        className="flex-1 border border-gray-300 text-sm rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#f5946d]"
       />
       <SearchIcon onClick={searchHandler} />
     </div>
