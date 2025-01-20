@@ -1,7 +1,9 @@
-export default function HouseDetailPage({ children }: { children: React.ReactNode }) {
+import { RoomProvider } from "@/context/RoomsContext";
+
+export default function HouseDetailPageLayout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="h-screen">
-      <main className="w-full h-full">{children}</main>
-    </section>
+    <RoomProvider>
+      <main className="w-full h-screen">{children}</main>
+    </RoomProvider>
   );
 }

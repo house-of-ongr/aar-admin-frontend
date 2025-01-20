@@ -2,25 +2,26 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import API_CONFIG from "@/config/api";
-import SpinnerIcon from "@/components/SpinnerIcon";
-import Link from "next/link";
-import Button from "@/components/buttons/Button";
-import { MdOutlineArrowBackIos } from "react-icons/md";
-import RenderImages from "@/components/RenderImages";
 import { HouseDetail, Room } from "@/types/house";
+import { useRoomContext } from "@/context/RoomsContext";
+import API_CONFIG from "@/config/api";
+import SpinnerIcon from "@/components/icons/SpinnerIcon";
+import Button from "@/components/buttons/Button";
+import RenderImages from "@/components/RenderImages";
 import HouseForm from "@/components/HouseForm";
 import RoomForm from "@/components/RoomForm";
+import ArrowBackIcon from "@/components/icons/ArrowBackIcon";
 
 type HouseData = {
-  houseId: string | number;
   house: HouseDetail;
   rooms: Room[];
 };
 
 export type EditableRoomData = {
   imageId: number;
+  roomId: number;
   name: string;
+  originalName?: string;
 };
 
 export type EditableHouseData = {
@@ -35,6 +36,7 @@ export type EditableHouseData = {
 
 export default function HouseDetailPage() {
   const params = useParams<{ houseId: string }>();
+  const { setRooms } = useRoomContext();
 
   const [houseData, setHouseData] = useState<HouseData | null>(null);
   const [editableData, setEditableData] = useState<EditableHouseData | null>(null);
@@ -59,6 +61,7 @@ export default function HouseDetailPage() {
       }
 
       const result = await response.json();
+      //  * todo :house delete 성공 모달창으로 보여주기
       console.log("House deleted successfully:", result.message);
       alert(result.message);
       router.push("/houses", { scroll: false });
@@ -68,6 +71,7 @@ export default function HouseDetailPage() {
   };
 
   const houseDataSubmitHandler = async () => {
+    console.log(`${API_CONFIG.BACK_API}/houses/${params.houseId}`);
     if (!houseData) return;
 
     try {
@@ -77,51 +81,68 @@ export default function HouseDetailPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title: houseData.house.title,
-          author: houseData.house.author,
-          description: houseData.house.description,
+          title: editableData?.house.title,
+          author: editableData?.house.author,
+          description: editableData?.house.description,
         }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to update house data");
       }
-
+      // * todo :house update 성공 모달창으로 보여주기
       const result = await response.json();
       console.log("House data updated successfully:", result);
 
       setIsEditHouseInfo(false);
+      setHouseData((prev) => (prev ? { ...prev, house: { ...prev.house, ...editableData?.house } } : null));
     } catch (error) {
       console.error("Error updating house data:", error);
     }
   };
 
   const roomDataSubmitHandler = async () => {
-    if (!houseData) return;
+    if (!editableData) return;
+
+    const changedRooms = editableData.rooms
+      .filter((room) => room.name !== room.originalName)
+      .map((room) => ({
+        roomId: room.roomId,
+        newName: room.name,
+      }));
+
+    if (changedRooms.length === 0) {
+      // * todo : 모달창
+      alert("변경된 방 이름이 없습니다.");
+      return;
+    }
 
     try {
-      const roomUpdates = houseData.rooms.map(async (room) => {
-        const response = await fetch(`${API_CONFIG.BACK_API}/houses/rooms/${params.houseId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            originalName: room.originalName,
-            newName: room.name,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to update room: ${room.name}`);
-        }
-
-        return response.json();
+      const response = await fetch(`${API_CONFIG.BACK_API}/houses/rooms`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(changedRooms),
       });
 
-      const results = await Promise.all(roomUpdates);
-      console.log("Rooms updated successfully:", results);
+      if (!response.ok) {
+        throw new Error("Failed to update room data");
+      }
+
+      const result = await response.json();
+      // * todo : 모달창
+      console.log("Room data updated successfully:", result);
+
       setIsEditRoomInfo(false);
+      setHouseData((prev) => {
+        if (!prev) return null;
+        const updatedRooms = prev.rooms.map((room) => {
+          const updatedRoom = changedRooms.find((r) => r.roomId === room.roomId);
+          return updatedRoom ? { ...room, name: updatedRoom.newName } : room;
+        });
+        return { ...prev, rooms: updatedRooms };
+      });
     } catch (error) {
       console.error("Error updating room data:", error);
     }
@@ -135,6 +156,7 @@ export default function HouseDetailPage() {
     setEditableData((prev) => {
       if (!prev) return null;
       const updatedRooms = prev.rooms.map((room, idx) => (idx === index ? { ...room, [field]: value } : room));
+
       return { ...prev, rooms: updatedRooms };
     });
   };
@@ -143,17 +165,16 @@ export default function HouseDetailPage() {
     const fetchHouseData = async () => {
       try {
         const response = await fetch(`${API_CONFIG.BACK_API}/houses/${params.houseId}`);
-        console.log(response);
+
         if (!response.ok) {
           throw new Error("Failed to fetch house data");
         }
         const data = await response.json();
-        console.log("house data :", data);
-
         const roomsEditableData = data.rooms.map((room: Room) => ({
           imageId: room.imageId,
+          roomId: room.roomId,
           name: room.name,
-          originalName: room.originalName,
+          originalName: room.name,
         }));
 
         setHouseData(data);
@@ -179,6 +200,12 @@ export default function HouseDetailPage() {
     fetchHouseData();
   }, [params.houseId]);
 
+  useEffect(() => {
+    if (houseData?.rooms) {
+      setRooms(houseData.rooms);
+    }
+  }, [houseData?.rooms, setRooms]);
+
   if (loading)
     return (
       <div className="w-full h-full flex-center">
@@ -188,16 +215,12 @@ export default function HouseDetailPage() {
   if (houseData && editableData && scale)
     return (
       <div className="w-full h-full flex items-center">
-        <div className="w-1/5 h-full flex flex-col gap-4 overflow-scroll">
-          {/* 왼쪽 상단 */}
+        <section className="w-1/5 h-full flex flex-col gap-4 overflow-scroll">
           <div className="w-full pt-6  px-3 flex justify-between items-center">
-            <Link href={"/houses"} className="cursor-pointer  hover:bg-orange-300 rounded-full p-2">
-              <MdOutlineArrowBackIos size={20} />
-            </Link>
+            <ArrowBackIcon />
             <h1 className="font-bold">하우스 디테일 </h1>
             <Button label="DELETE" onClick={houseDeleteHandler} />
           </div>
-          {/* 하우스 정보*/}
           <HouseForm
             houseData={editableData.house}
             isEdit={isEditHouseInfo}
@@ -206,7 +229,6 @@ export default function HouseDetailPage() {
             onCancel={() => setIsEditHouseInfo(false)}
             toggleEdit={() => setIsEditHouseInfo(true)}
           />
-          {/* 룸 정보*/}
           <RoomForm
             rooms={editableData.rooms}
             isEdit={isEditRoomInfo}
@@ -215,9 +237,9 @@ export default function HouseDetailPage() {
             onCancel={() => setIsEditRoomInfo(false)}
             toggleEdit={() => setIsEditRoomInfo(true)}
           />
-        </div>
-        {/* 이미지 렌더링 섹션 - 오른쪽 */}
-        <RenderImages houseId={houseData.housId} houseData={houseData} scale={scale} />
+        </section>
+
+        <RenderImages houseData={houseData} scale={scale} />
       </div>
     );
 }
