@@ -16,24 +16,29 @@ export default function HouseListPage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [totalItems, setTotalItems] = useState<number>(0);
+  // const [size, setSize] = useState<number>(0);
+  const [pageNum, setPageNum] = useState<number>(0);
   const ITEMS_PER_PAGE = 9;
 
   const fetchHouses = async (page: number) => {
     try {
-      const response = await fetch(`${API_CONFIG.BACK_API}/houses?page=${page - 1}&size=${ITEMS_PER_PAGE}`);
+      const response = await fetch(`${API_CONFIG.BACK_API}/houses?page=${pageNum + 1}&size=${ITEMS_PER_PAGE}`);
       // const response = await fetch(`${API_CONFIG.BACK_API}/houses`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch houses");
       }
       const data = await response.json();
+      console.log("houselist", data);
 
-      setHouses(data.houses.content);
-      setFilteredHouses(data.houses.content);
-      setTotalPages(data.houses.totalPages);
-      setTotalItems(data.houses.totalElements);
+      setHouses(data.houses);
+      setFilteredHouses(data.houses);
+      setTotalPages(data.pagination.totalPages);
+      setTotalItems(data.pagination.totalElements);
+      // setSize(data.pagination.size);
+      setPageNum(data.pagination.pageNumber);
     } catch (error) {
-      console.error("Error fetching house list:", error);
+      console.error("하우스 리스트 조회 fetching error:", error);
     }
   };
 

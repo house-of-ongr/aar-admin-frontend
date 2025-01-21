@@ -12,7 +12,7 @@ import HouseForm from "@/components/HouseForm";
 import RoomForm from "@/components/RoomForm";
 import ArrowBackIcon from "@/components/icons/ArrowBackIcon";
 
-type HouseData = {
+export type HouseData = {
   house: HouseDetail;
   rooms: Room[];
 };

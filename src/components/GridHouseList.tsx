@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function GridHouseList({ houses, currentPage, onPageChange, totalPages, totalItems }: Props) {
-  if (houses.length === 0) return <div className="text-center">검색 결과가 없습니다.</div>;
+  if (houses.length === 0 || totalItems === 0) return <div className="text-center">검색 결과가 없습니다.</div>;
 
   return (
     <div>
@@ -22,6 +22,7 @@ export default function GridHouseList({ houses, currentPage, onPageChange, total
         {houses.map((house) => (
           <Link
             href={`/houses/${house.id}`}
+            scroll={false}
             key={house.id}
             className="flex w-full px-2  md:py-4 md:px-3 bg-white border shadow-sm border-[#f5946d] "
           >
