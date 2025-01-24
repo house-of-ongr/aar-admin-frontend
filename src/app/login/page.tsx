@@ -53,9 +53,9 @@ export default function LoginPage() {
       <div className="flex-center relative">
         <motion.div
           initial={{ y: 0 }}
-          animate={{ y: -80 }}
+          animate={{ y: -100 }}
           transition={{
-            duration: 0.5,
+            duration: 0.7,
           }}
           onAnimationComplete={() => setIsAnimationComplete(true)}
         >
@@ -65,9 +65,9 @@ export default function LoginPage() {
         {isAnimationComplete && (
           <motion.form
             onSubmit={formSubmitHandler}
-            initial={{ opacity: 0, y: 200 }}
-            animate={{ opacity: 1, y: 160 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 180 }}
+            animate={{ opacity: 1, y: 120 }}
+            transition={{ duration: 0.7 }}
             className="absolute z-10 flex-center flex-col"
           >
             <CustomInput label="아이디" name="username" value={formData.username} onChange={onChangeHandler} />

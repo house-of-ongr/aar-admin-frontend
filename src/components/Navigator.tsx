@@ -15,8 +15,8 @@ const Navigator = () => {
   const pathName = usePathname();
 
   return (
-    <nav className="px-5 w-full flex justify-end md:justify-center text-sm">
-      <ul className="flex gap-10 lg:gap-16">
+    <nav className="md:pt-0 md:pb-0 lg:pt-10 lg:pb-3 pr-3  w-full flex justify-end md:justify-center text-sm">
+      <ul className="flex gap-10 lg:gap-16 sm:pr-4">
         {TABS.map(({ label, href }) => {
           const isActive = pathName === href;
           return (
@@ -24,7 +24,7 @@ const Navigator = () => {
               <Link
                 href={href}
                 scroll={false}
-                className={`${isActive ? "text-black font-extrabold" : "font-light"} hover:text-slate-600`}
+                className={`${isActive ? "text-black font-bold" : ""} hover:text-slate-600`}
               >
                 {label}
               </Link>
