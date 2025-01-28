@@ -2,7 +2,7 @@ import React from "react";
 
 type CicleIconProps = {
   icon: React.ReactNode;
-  text: string;
+  text?: string;
 };
 
 export default function CircleIcon({ icon, text }: CicleIconProps) {
