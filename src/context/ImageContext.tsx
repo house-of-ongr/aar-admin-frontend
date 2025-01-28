@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
 
 export interface ImageData {
   file: File;
@@ -50,9 +50,9 @@ export const ImageProvider = ({ children }: { children: ReactNode }) => {
     setRoomImages((prev) => prev.map((item, i) => (i === index ? { ...item, x, y } : item)));
   };
 
-  const updateRoomZIndex = (index: number, newZIndex: number) => {
+  const updateRoomZIndex = useCallback((index: number, newZIndex: number) => {
     setRoomImages((prev) => prev.map((item, i) => (i === index ? { ...item, z: newZIndex } : item)));
-  };
+  }, []);
 
   const getImageDimensions = (file: File, index: number) => {
     return new Promise<{ index: number; width: number; height: number }>((resolve, reject) => {
@@ -66,7 +66,6 @@ export const ImageProvider = ({ children }: { children: ReactNode }) => {
       };
 
       img.onerror = reject;
-
       img.src = objectURL;
     });
   };
@@ -122,10 +121,10 @@ export const ImageProvider = ({ children }: { children: ReactNode }) => {
           width: dimensions[index].width,
           height: dimensions[index].height,
           file,
-          title: `room-title-${index + 1}`,
+          title: "",
           x: 0,
           y: 0,
-          z: 0,
+          z: 5,
           id: index + 1,
         }));
         setRoomImages((prev) => [...prev, ...roomData]);

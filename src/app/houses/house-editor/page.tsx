@@ -8,10 +8,11 @@ import BorderImagePreview from "@/components/houseEditor/BorderImagePreview";
 import BorderImageUploader from "@/components/houseEditor/BorderImageUploader";
 import HouseImageUploader from "@/components/houseEditor/HouseImageUploader";
 import RoomImagesUploader from "@/components/houseEditor/RoomImagesUploader";
-import { DraggableItemWrapper } from "@/components/houseEditor/DraggableItemWrapper";
+
 import API_CONFIG from "@/config/api";
 import { useRouter } from "next/navigation";
 import ArrowBackIcon from "@/components/icons/ArrowBackIcon";
+import DraggableItemWrapper from "@/components/houseEditor/DraggableItemWrapper";
 
 export default function HouseEditorPage() {
   const { houseImage, borderImage, roomImages } = useImageContext();
@@ -97,16 +98,16 @@ export default function HouseEditorPage() {
     }
   };
 
-  const borderImageURL = useMemo(() => borderImage && URL.createObjectURL(borderImage.file), [borderImage?.file]);
+  const borderImageURL = useMemo(() => borderImage && URL.createObjectURL(borderImage.file), [borderImage]);
   const roomImageURLs = useMemo(() => roomImages.map((room) => URL.createObjectURL(room.file)), [roomImages]);
 
   return (
     <div className="w-full h-full flex items-center">
       <section className="w-1/5 h-full flex flex-col gap-4  overflow-scroll ">
         <div className="w-full pt-6  px-3 flex justify-between items-center">
-          <ArrowBackIcon />
+          <ArrowBackIcon href="/houses" />
           <h1 className="">뉴 하우스</h1>
-          <Button label="SAVE" onClick={saveHandler} size="small" />
+          <Button label="저장" onClick={saveHandler} />
         </div>
         <div className="flex flex-col gap-5 m-3">
           <HouseImageUploader />

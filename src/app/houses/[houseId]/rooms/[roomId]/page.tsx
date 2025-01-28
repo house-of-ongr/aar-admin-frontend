@@ -7,6 +7,7 @@ import Image from "next/legacy/image";
 import Button from "@/components/buttons/Button";
 import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import { useRoomContext } from "@/context/RoomsContext";
+import CardLabel from "@/components/label/CardLabel";
 
 type Room = {
   name: string;
@@ -16,7 +17,7 @@ type Room = {
   roomId: number;
 };
 
-export default function RoomDetailPage() {
+export default function AdminRoomDetailPage() {
   const { rooms } = useRoomContext();
   const params = useParams<{ houseId: string; roomId: string }>();
   const router = useRouter();
@@ -63,18 +64,18 @@ export default function RoomDetailPage() {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center bg-gray-100">
-      <div className="w-full px-10 py-3 flex justify-between items-center  border border-black">
-        <div>
-          <h1 className="font-bold">Room Name : {roomData.name}</h1>
-          <label className="bg-slate-200 py-1">Room ID : {roomId}</label>
-          <p>
+    <div className="relative w-full h-screen flex flex-col justify-center items-center bg-gray-100">
+      <div className="w-full px-10 py-3 flex justify-between items-center  border-b-2 bg-stone-800">
+        <div className="py-1 ">
+          <CardLabel size="large" hasPadding hasBorder text={`ROOM ID# ${roomId}`} />
+          <p className="pt-2 text-white"> Room Name: {roomData.name}</p>
+          <p className="text-white">
             Room Dimensions: W {roomData.width} x H {roomData.height}
           </p>
         </div>
 
         <div className="flex gap-3">
-          <Button label="NEXT ROOM" onClick={navigateOtherRoomDetailPage} />
+          <Button label="NEXT" onClick={navigateOtherRoomDetailPage} />
           <Button label="EXIT" onClick={navigateHouseListPage} />
         </div>
       </div>

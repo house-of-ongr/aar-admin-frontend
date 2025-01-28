@@ -29,7 +29,7 @@ export type EditableHouseData = {
     title: string;
     author: string;
     description: string;
-    createdDate: string;
+    createdDate?: string;
   };
   rooms: EditableRoomData[];
 };
@@ -217,9 +217,9 @@ export default function HouseDetailPage() {
       <div className="w-full h-full flex items-center">
         <section className="w-1/5 h-full flex flex-col gap-4 overflow-scroll">
           <div className="w-full pt-6  px-3 flex justify-between items-center">
-            <ArrowBackIcon />
-            <h1 className="font-bold">하우스 디테일 </h1>
-            <Button label="DELETE" onClick={houseDeleteHandler} />
+            <ArrowBackIcon href="/houses" />
+            <h1 className="font-bold">하우스 상세 </h1>
+            <Button label="삭제" onClick={houseDeleteHandler} />
           </div>
           <HouseForm
             houseData={editableData.house}

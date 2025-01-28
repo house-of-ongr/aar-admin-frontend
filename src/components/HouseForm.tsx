@@ -2,10 +2,7 @@ import React from "react";
 import InputField from "./InputField";
 import ContainerTitle from "./ContainerTitle";
 import { EditableHouseData } from "@/app/houses/[houseId]/page";
-import { FiEdit3 } from "react-icons/fi";
-import { MdOutlineCancel } from "react-icons/md";
 import { TbHomeEdit } from "react-icons/tb";
-import { GiConfirmed } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 import { IoMdCheckmark } from "react-icons/io";
 
@@ -20,7 +17,7 @@ type HouseFormProps = {
 
 export default function HouseForm({ houseData, isEdit, onChange, onSubmit, onCancel, toggleEdit }: HouseFormProps) {
   return (
-    <div className="rounded-2xl p-7 m-3 bg-[#F8EFE6]">
+    <div className="rounded-md p-7 mx-3 border border-[#df754b]">
       {isEdit ? (
         <div className="flex gap-3 justify-end ">
           <div className="hover:text-[#df754b] cursor-pointer">
@@ -38,7 +35,6 @@ export default function HouseForm({ houseData, isEdit, onChange, onSubmit, onCan
       )}
       <ContainerTitle stepText="FIRST" headingText="하우스 정보" />
 
-      {/* </div> */}
       <InputField
         label="House Title"
         id="house-title"

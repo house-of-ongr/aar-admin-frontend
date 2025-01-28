@@ -13,7 +13,7 @@ interface DraggableItemProps {
   children: React.ReactNode;
 }
 
-export const DraggableItem = React.memo(
+const DraggableItem = React.memo(
   ({ children, index, _width, _height, zIndex, scale, onPositionChange }: DraggableItemProps) => {
     const nodeRef = useRef<HTMLDivElement>(null as any);
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -68,3 +68,7 @@ export const DraggableItem = React.memo(
     );
   }
 );
+
+DraggableItem.displayName = "DraggableItem";
+
+export default DraggableItem;

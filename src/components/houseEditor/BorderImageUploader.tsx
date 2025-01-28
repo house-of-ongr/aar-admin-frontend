@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import FileUploadButton from "../buttons/FileUploadButton";
 import FileName from "./FileName";
 import ContainerTitle from "../ContainerTitle";
+import { IoAlertCircle } from "react-icons/io5";
 
 export default function BorderImageUploader() {
-  const { handleFileChange } = useImageContext();
+  const { handleFileChange, borderImage } = useImageContext();
   const [fileName, setFileName] = useState<string>("");
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,13 +18,22 @@ export default function BorderImageUploader() {
   };
 
   return (
-    <div className="rounded-2xl pt-3 pb-6 px-7 bg-[#F8EFE6] ">
-      <ContainerTitle stepText="Second" headingText="하우스 보더 이미지 업로드" />
-      <div className="flex flex-col items-center gap-6">
-        {/* input 숨김 */}
+    <div className="rounded-2xl py-3 px-7 bg-[#F8EFE6] ">
+      <ContainerTitle stepText="두번째" headingText="하우스의 테두리 이미지" />
+      <div className="flex flex-col items-center gap-1">
         <input type="file" id="border-img" className="hidden" accept="image/*" onChange={handleFileUpload} />
         <FileUploadButton htmlFor="border-img" />
-        <div className="w-full flex text-start">{fileName && <FileName fileName={fileName} />}</div>
+        {!borderImage && (
+          <div className="flex items-start gap-1 ">
+            <div className="flex-shrink-0 pt-[14px]">
+              <IoAlertCircle color="#FF6347" />
+            </div>
+
+            <p className="text-red-500 text-sm mt-3">5000 x 5000 사이즈의 테두리 이미지를 업로드해주세요.</p>
+          </div>
+        )}
+
+        <div className="w-full flex text-start pt-4">{fileName && <FileName fileName={fileName} />}</div>
       </div>
     </div>
   );

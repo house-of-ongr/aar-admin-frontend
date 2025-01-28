@@ -57,7 +57,7 @@ export default function HouseImageUploader() {
   ];
   return (
     <div className="rounded-2xl py-3 px-7 bg-[#F8EFE6] ">
-      <ContainerTitle stepText="First" headingText="하우스 프로필 이미지 업로드" />
+      <ContainerTitle stepText="첫번째" headingText="하우스 프로필 이미지" />
 
       <div className="flex flex-col items-center gap-6 ">
         <input type="file" id="house-img" className="hidden" accept="image/*" onChange={handleFileUpload} />

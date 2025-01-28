@@ -13,7 +13,7 @@ const BorderImagePreview: React.FC<BorderImagePreviewProps> = React.memo(({ imag
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     setIsLoading(false);
     const img = e.currentTarget;
-    const { naturalWidth, naturalHeight } = img;
+    const { naturalWidth } = img;
     const renderedWidth = img.clientWidth;
     const scale = renderedWidth / naturalWidth;
     setScale(scale);
@@ -32,5 +32,7 @@ const BorderImagePreview: React.FC<BorderImagePreviewProps> = React.memo(({ imag
     </div>
   );
 });
+
+BorderImagePreview.displayName = "BorderImagePreview";
 
 export default BorderImagePreview;

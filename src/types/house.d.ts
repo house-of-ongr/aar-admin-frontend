@@ -3,8 +3,8 @@ export interface BaseHouse {
   title: string;
   author: string;
   description: string;
-  createdDate: string;
-  updatedDate: string;
+  createdDate?: string;
+  updatedDate?: string;
 }
 
 // 리스트 페이지에서 사용하는 하우스 타입

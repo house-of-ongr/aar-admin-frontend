@@ -10,12 +10,12 @@ export default function GridHeader({ headerTitles }: HeaderProps) {
   const gridTemplate = headerTitles.map((item) => item.width).join(" ");
 
   return (
-    <div className="grid py-2 w-full text-md mb-1   " style={{ gridTemplateColumns: gridTemplate }}>
+    <ul className="w-full grid py-2 invisible md:visible" style={{ gridTemplateColumns: gridTemplate }}>
       {headerTitles.map((item) => (
-        <div key={item.name} className="text-center ">
+        <li key={item.name} className="pt-5 flex items-center gap-2  justify-center">
           {item.name}
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

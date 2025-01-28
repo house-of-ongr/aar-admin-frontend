@@ -27,7 +27,7 @@ export default function RoomImagesUploader() {
 
   return (
     <div className="rounded-2xl py-3 px-7 bg-[#F8EFE6] ">
-      <ContainerTitle stepText="Third" headingText="하우스 룸 이미지 업로드" />
+      <ContainerTitle stepText="세번째" headingText="하우스의 룸 이미지" />
 
       <div className="flex flex-col items-center">
         <input
@@ -41,9 +41,12 @@ export default function RoomImagesUploader() {
         />
         <FileUploadButton htmlFor="rooms-img" />
         {!borderImage && (
-          <div className="flex items-center gap-1">
-            <IoAlertCircle color="#FF6347" />
-            <p className="text-red-500 text-sm mt-1"> 하우스 보더 이미지를 먼저 업로드해야 합니다.</p>
+          <div className="flex items-start gap-1 ">
+            <div className="flex-shrink-0 pt-[14px]">
+              <IoAlertCircle color="#FF6347" />
+            </div>
+
+            <p className="text-red-500 text-sm mt-3">테두리 이미지를 먼저 업로드해주세요.</p>
           </div>
         )}
       </div>
@@ -74,7 +77,7 @@ export default function RoomImagesUploader() {
                 value={room.z || 5}
                 className="w-3/4 h-[6px] bg-gray-400 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
                 style={{
-                  background: "linear-gradient(-90deg, #ea6e2f 0%, #f4efff 100%)",
+                  background: "#727070",
                 }}
                 onChange={(e) => handleZIndexChange(index, parseInt(e.target.value, 10))}
               />

@@ -1,8 +1,8 @@
 export const userSearchOptions = [
   { value: "all", label: "전체" },
-  { value: "username", label: "닉네임" },
+  { value: "nickname", label: "닉네임" },
   { value: "realname", label: "유저네임" },
-  { value: "phone-number", label: "휴대폰 번호" },
+  { value: "phone-number", label: "핸드폰" },
 ];
 
 export const houseSearchOptions = [
