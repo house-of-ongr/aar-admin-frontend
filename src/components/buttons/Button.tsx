@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 type ButtonProps = {
-  label: string;
+  label: string | React.ReactNode;
   type?: "submit" | "button";
   onClick?: () => void;
   disabled?: boolean;
@@ -15,10 +15,10 @@ export default function Button({ label, type = "button", onClick, disabled, size
       type={type}
       disabled={disabled}
       className={clsx(
-        "border py-3 rounded-lg text-sm  text-white bg-[#F5946D] cursor-pointer disabled:cursor-not-allowed hover:bg-[#e7a68c]",
+        "rounded-lg text-sm text-white bg-[#F5946D] cursor-pointer disabled:cursor-not-allowed hover:bg-[#e7a68c]",
         {
-          "px-8": size === "default",
-          "px-2": size === "small",
+          "px-4 py-2 md:px-8 md:py-3": size === "default",
+          "px-2 py-2": size === "small",
         }
       )}
     >

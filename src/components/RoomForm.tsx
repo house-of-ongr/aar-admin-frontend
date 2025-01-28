@@ -16,7 +16,7 @@ type RoomFormProps = {
 
 export default function RoomForm({ rooms, isEdit, onChange, onSubmit, onCancel, toggleEdit }: RoomFormProps) {
   return (
-    <div className="rounded-2xl py-10 px-7 m-3 bg-[#F8EFE6]">
+    <div className="rounded-md pt-7 px-7 mx-3 border border-[#df754b] ">
       {isEdit ? (
         <div className="flex gap-3 justify-end">
           <div className="hover:text-[#df754b] cursor-pointer">
@@ -34,7 +34,6 @@ export default function RoomForm({ rooms, isEdit, onChange, onSubmit, onCancel, 
       )}
 
       <ContainerTitle stepText="SECOND" headingText="방 정보" />
-
       {rooms.map((room, index) => (
         <InputField
           key={index}

@@ -13,7 +13,7 @@ type RenderImagesProps = {
 };
 
 const RenderImages = memo(({ houseData, scale }: RenderImagesProps) => {
-  console.log("houseData?", houseData.house.borderImageId);
+  console.log("houseData", houseData);
   return (
     <section className="relative w-4/5 h-full flex justify-center border-l-2">
       <div className="relative">
@@ -25,7 +25,7 @@ const RenderImages = memo(({ houseData, scale }: RenderImagesProps) => {
           src={`${API_CONFIG.PRIVATE_IMAGE_LOAD_API}/${houseData.house.borderImageId}`}
         />
 
-        {houseData.rooms.map((room, index) => (
+        {houseData.rooms.map((room) => (
           <Link key={room.imageId} href={`/houses/${houseData.house.houseId}/rooms/${room.roomId}`}>
             <Image
               priority
@@ -56,5 +56,7 @@ function arePropsEqual(prevProps: RenderImagesProps, nextProps: RenderImagesProp
     prevProps.scale === nextProps.scale
   );
 }
+
+RenderImages.displayName = "RenderImages";
 
 export default RenderImages;
